@@ -39,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log('Redirect result:', result);
         
         if (result?.user) {
-          console.log('User logged in via redirect:', result.user.email);
+          console.log('✅ User logged in via redirect:', result.user.email);
           
           try {
             // Check/create user in Firestore
@@ -70,15 +70,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               setCurrentUser({ uid: result.user.uid, ...userData });
             }
           } catch (dbError) {
-            console.error('Firestore error:', dbError);
+            console.error('❌ Firestore error:', dbError);
             setAuthError('Gagal menyimpan data user');
           }
+        } else {
+          console.log('ℹ️ Redirect result is null - this is normal if not coming from Google OAuth');
         }
       })
       .catch((error) => {
-        console.error('getRedirectResult error:', error);
-        if (error.code !== 'auth/no-auth-event') {
-          setAuthError(error.message || 'Terjadi kesalahan saat login');
+        console.error('❌ getRedirectResult error:', error);
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        
+        if (error.code === 'auth/unauthorized-domain') {
+          setAuthError('Domain tidak diizinkan. Tambahkan domain ini ke Firebase Console > Authentication > Settings > Authorized Domains');
+        } else if (error.code === 'auth/popup-closed-by-user') {
+          setAuthError('Login dibatalkan. Silakan coba lagi.');
+        } else if (error.code !== 'auth/no-auth-event') {
+          setAuthError(`Error: ${error.message || 'Terjadi kesalahan saat login'}`);
         }
       });
   }, []);

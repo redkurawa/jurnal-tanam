@@ -12,6 +12,13 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Debug: Log config (hide API key partially)
+console.log('Firebase Config:', {
+  apiKey: firebaseConfig.apiKey ? `${firebaseConfig.apiKey.substring(0, 10)}...` : 'MISSING',
+  authDomain: firebaseConfig.authDomain || 'MISSING',
+  projectId: firebaseConfig.projectId || 'MISSING',
+});
+
 // Validate config
 if (!firebaseConfig.apiKey) {
   console.error('Firebase configuration is missing. Please check your .env file.');

@@ -3,26 +3,38 @@ import { useAuth } from '../hooks/useAuth';
 import './Login.css';
 
 export default function Login() {
-  const { loginWithGoogle, loading: authLoading, authError, clearAuthError } = useAuth();
+  const { loginWithGoogle, loading: authLoading, authError, clearAuthError, currentUser } = useAuth();
   const [localError, setLocalError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Combine local and context errors
   const error = localError || authError || '';
 
+  // Log debug info to console only
+  console.log('Login render - currentUser:', currentUser?.email || 'null', 'authLoading:', authLoading);
+
   const handleGoogleLogin = async () => {
     setLoading(true);
     setLocalError('');
     clearAuthError();
+    console.log('Login button clicked');
+    
     try {
+      console.log('Starting Google login...');
+      sessionStorage.setItem('redirectInProgress', 'true');
       await loginWithGoogle();
-      // Note: signInWithRedirect will navigate away to Google's OAuth page
-      // The user will be redirected back to this app after authentication
-    } catch (err) {
+      console.log('Login initiated successfully');
+    } catch (err: unknown) {
       console.error('Login error:', err);
       setLoading(false);
       setLocalError('Gagal login dengan Google. Silakan coba lagi.');
+      sessionStorage.removeItem('redirectInProgress');
     }
+  };
+
+  const handleRetry = () => {
+    console.log('Retry clicked - reloading page');
+    window.location.reload();
   };
 
   // Show loading state while checking auth status after redirect
@@ -35,7 +47,9 @@ export default function Login() {
             <h1>Jurnal Tanam</h1>
           </div>
           <div className="loading-spinner">
+            <div className="spinner"></div>
             <p>Memuat...</p>
+            <p className="loading-detail">Sedang memeriksa status login</p>
           </div>
         </div>
       </div>
@@ -75,7 +89,10 @@ export default function Login() {
 
         {error && (
           <div className="error-message">
-            {error}
+            <strong>Error:</strong> {error}
+            <button onClick={handleRetry} className="btn-retry">
+              🔄 Coba Lagi
+            </button>
           </div>
         )}
 
