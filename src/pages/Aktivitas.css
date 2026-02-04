@@ -1,0 +1,134 @@
+.jenis-selector {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.jenis-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.jenis-btn span:first-child {
+  font-size: 20px;
+}
+
+.jenis-btn span:last-child {
+  font-size: 11px;
+  color: #666;
+}
+
+.jenis-btn:hover {
+  border-color: #2e7d32;
+}
+
+.jenis-btn.active {
+  border-color: #2e7d32;
+  background: #e8f5e9;
+}
+
+.aktivitas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aktivitas-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.aktivitas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #eee;
+}
+
+.aktivitas-jenis {
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.aktivitas-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.aktivitas-body {
+  padding: 16px;
+}
+
+.aktivitas-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.aktivitas-info span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.aktivitas-detail {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.aktivitas-hasil {
+  margin: 8px 0;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.aktivitas-biaya {
+  margin: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.aktivitas-catatan {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .jenis-selector {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .jenis-btn span:last-child {
+    font-size: 10px;
+  }
+
+  .aktivitas-info {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
