@@ -36,6 +36,26 @@
   color: #333;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-logout-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.mobile-logout-btn:hover {
+  background: #fee;
+}
+
 /* Sidebar */
 .sidebar {
   width: 260px;

@@ -34,7 +34,7 @@ export default function Layout() {
           <span className="brand-icon">🌱</span>
           <span className="brand-name">Jurnal Tanam</span>
         </div>
-        <div className="header-user">
+        <div className="header-actions">
           {currentUser?.foto && (
             <img 
               src={currentUser.foto} 
@@ -42,6 +42,9 @@ export default function Layout() {
               className="user-avatar"
             />
           )}
+          <button onClick={handleLogout} className="mobile-logout-btn" title="Keluar">
+            🚪
+          </button>
         </div>
       </header>
 
