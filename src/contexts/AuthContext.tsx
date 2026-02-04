@@ -2,8 +2,6 @@ import { createContext, useState, useEffect, type ReactNode } from 'react';
 import { 
   GoogleAuthProvider, 
   signInWithPopup,
-  signInWithRedirect, 
-  getRedirectResult,
   signOut, 
   onAuthStateChanged,
   type User as FirebaseUser 
@@ -30,69 +28,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
 
-  // Effect 1: Handle redirect result (runs first when page loads)
-  useEffect(() => {
-    console.log('Checking for redirect result...');
-    
-    getRedirectResult(auth)
-      .then(async (result) => {
-        console.log('Redirect result:', result);
-        
-        if (result?.user) {
-          console.log('✅ User logged in via redirect:', result.user.email);
-          
-          try {
-            // Check/create user in Firestore
-            const userRef = doc(db, 'users', result.user.uid);
-            const userSnap = await getDoc(userRef);
-            
-            if (!userSnap.exists()) {
-              console.log('Creating new user in Firestore...');
-              const newUser: Omit<User, 'uid'> = {
-                googleId: result.user.uid,
-                nama: result.user.displayName || 'Pengguna',
-                email: result.user.email || '',
-                foto: result.user.photoURL || undefined,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              };
-              
-              await setDoc(userRef, {
-                ...newUser,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp(),
-              });
-              
-              setCurrentUser({ uid: result.user.uid, ...newUser });
-            } else {
-              console.log('User exists in Firestore');
-              const userData = userSnap.data() as Omit<User, 'uid'>;
-              setCurrentUser({ uid: result.user.uid, ...userData });
-            }
-          } catch (dbError) {
-            console.error('❌ Firestore error:', dbError);
-            setAuthError('Gagal menyimpan data user');
-          }
-        } else {
-          console.log('ℹ️ Redirect result is null - this is normal if not coming from Google OAuth');
-        }
-      })
-      .catch((error) => {
-        console.error('❌ getRedirectResult error:', error);
-        console.error('Error code:', error.code);
-        console.error('Error message:', error.message);
-        
-        if (error.code === 'auth/unauthorized-domain') {
-          setAuthError('Domain tidak diizinkan. Tambahkan domain ini ke Firebase Console > Authentication > Settings > Authorized Domains');
-        } else if (error.code === 'auth/popup-closed-by-user') {
-          setAuthError('Login dibatalkan. Silakan coba lagi.');
-        } else if (error.code !== 'auth/no-auth-event') {
-          setAuthError(`Error: ${error.message || 'Terjadi kesalahan saat login'}`);
-        }
-      });
-  }, []);
-
-  // Effect 2: Listen for auth state changes
+  // Effect: Listen for auth state changes
   useEffect(() => {
     console.log('Setting up auth state listener...');
     
@@ -140,12 +76,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, []);
 
-  // Check if running on localhost
-  const isLocalhost = window.location.hostname === 'localhost' || 
-                      window.location.hostname === '127.0.0.1';
-
   const loginWithGoogle = async () => {
-    console.log('Login clicked, isLocalhost:', isLocalhost);
+    console.log('Login clicked');
     
     try {
       const provider = new GoogleAuthProvider();
@@ -153,15 +85,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         prompt: 'select_account'
       });
       
-      if (isLocalhost) {
-        console.log('Using signInWithPopup for localhost...');
-        await signInWithPopup(auth, provider);
-      } else {
-        console.log('Using signInWithRedirect for production...');
-        await signInWithRedirect(auth, provider);
-      }
+      // Always use popup for better reliability
+      console.log('Using signInWithPopup...');
+      await signInWithPopup(auth, provider);
+      console.log('Popup login successful');
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('❌ Login error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Gagal login dengan Google';
       setAuthError(errorMessage);
       throw error;
