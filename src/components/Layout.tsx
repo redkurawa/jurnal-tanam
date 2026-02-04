@@ -34,17 +34,16 @@ export default function Layout() {
           <span className="brand-icon">🌱</span>
           <span className="brand-name">Jurnal Tanam</span>
         </div>
-        <div className="header-actions">
+        <div className="header-user">
           {currentUser?.foto && (
             <img 
               src={currentUser.foto} 
               alt={currentUser.nama} 
-              className="user-avatar"
+              className="user-avatar clickable"
+              onClick={handleLogout}
+              title="Klik untuk logout"
             />
           )}
-          <button onClick={handleLogout} className="mobile-logout-btn" title="Keluar">
-            🚪
-          </button>
         </div>
       </header>
 
