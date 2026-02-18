@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/feature",
+      "destination": "/feature.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

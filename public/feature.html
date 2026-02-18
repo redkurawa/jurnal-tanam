@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitur - JurnalTanam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* shadcn/ui Green Color Palette */
+      :root {
+        --green-50: #f0fdf4;
+        --green-100: #dcfce7;
+        --green-200: #bbf7d0;
+        --green-300: #86efac;
+        --green-400: #4ade80;
+        --green-500: #22c55e;
+        --green-600: #16a34a;
+        --green-700: #15803d;
+        --green-800: #166534;
+        --green-900: #14532d;
+        --green-950: #052e16;
+
+        --gray-50: #f9fafb;
+        --gray-100: #f3f4f6;
+        --gray-200: #e5e7eb;
+        --gray-300: #d1d5db;
+        --gray-400: #9ca3af;
+        --gray-500: #6b7280;
+        --gray-600: #4b5563;
+        --gray-700: #374151;
+        --gray-800: #1f2937;
+        --gray-900: #111827;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          'Inter',
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--green-50) 0%,
+          #ffffff 50%,
+          var(--green-50) 100%
+        );
+        min-height: 100vh;
+        color: var(--gray-800);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Header */
+      header {
+        padding: 20px 0;
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        border-bottom: 1px solid var(--gray-200);
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--green-700);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .logo-icon {
+        width: 32px;
+        height: 32px;
+        background: var(--green-600);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      nav a {
+        color: var(--gray-600);
+        text-decoration: none;
+        margin-left: 32px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      nav a:hover {
+        color: var(--green-600);
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 80px 0 60px;
+        text-align: center;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        background: var(--green-100);
+        color: var(--green-700);
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 24px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+      }
+
+      .hero h1 span {
+        color: var(--green-600);
+      }
+
+      .hero p {
+        font-size: 1.25rem;
+        color: var(--gray-500);
+        max-width: 600px;
+        margin: 0 auto 32px;
+      }
+
+      .cta-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background: var(--green-600);
+        color: white;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shine 2.5s ease-in-out infinite;
+      }
+
+      .btn-primary:hover {
+        background: var(--green-700);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+        animation: none;
+      }
+
+      .btn-primary:hover::before {
+        animation: none;
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4);
+        }
+        50% {
+          box-shadow: 0 0 20px 5px rgba(22, 163, 74, 0.3);
+        }
+      }
+
+      @keyframes shine {
+        0% {
+          left: -100%;
+        }
+        50%,
+        100% {
+          left: 100%;
+        }
+      }
+
+      /* Features Grid */
+      .features-section {
+        padding: 60px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .section-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 12px;
+      }
+
+      .section-header p {
+        color: var(--gray-500);
+        font-size: 1.1rem;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 16px;
+        padding: 32px;
+        border: 1px solid var(--gray-200);
+        transition: all 0.3s;
+      }
+
+      .feature-card:hover {
+        border-color: var(--green-300);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        transform: translateY(-4px);
+      }
+
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--green-100);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        color: var(--green-600);
+      }
+
+      .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 12px;
+      }
+
+      .feature-card p {
+        color: var(--gray-500);
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+
+      /* Stats Section */
+      .stats-section {
+        padding: 60px 0;
+        background: var(--green-600);
+        margin: 40px 0;
+        border-radius: 24px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 32px;
+        text-align: center;
+      }
+
+      .stat-item h3 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 8px;
+      }
+
+      .stat-item p {
+        color: var(--green-200);
+        font-weight: 500;
+      }
+
+      /* How It Works */
+      .how-it-works {
+        padding: 80px 0;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px;
+      }
+
+      .step {
+        text-align: center;
+        padding: 24px;
+      }
+
+      .step-number {
+        width: 56px;
+        height: 56px;
+        background: var(--green-600);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0 auto 20px;
+      }
+
+      .step h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 12px;
+      }
+
+      .step p {
+        color: var(--gray-500);
+        font-size: 0.95rem;
+      }
+
+      /* Footer */
+      footer {
+        padding: 40px 0;
+        border-top: 1px solid var(--gray-200);
+        text-align: center;
+      }
+
+      footer p {
+        color: var(--gray-500);
+        font-size: 0.9rem;
+      }
+
+      footer a {
+        color: var(--green-600);
+        text-decoration: none;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+
+        .header-content {
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        nav a {
+          margin-left: 16px;
+        }
+
+        nav a:first-child {
+          margin-left: 0;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat-item h3 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M12 2L12 22M12 2C12 2 8 6 8 10C8 14 12 18 12 22M12 2C12 2 16 6 16 10C16 14 12 18 12 22"
+                />
+              </svg>
+            </div>
+            JurnalTanam
+          </div>
+          <nav>
+            <a href="/">Beranda</a>
+            <a href="/feature">Fitur</a>
+            <a href="/login">Masuk</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <span class="hero-badge">✨ Fitur Lengkap</span>
+          <h1>
+            Semua yang Anda butuhkan<br />untuk <span>bertanam</span> lebih baik
+          </h1>
+          <p>
+            JurnalTanam menyediakan tools lengkap untuk mencatat, memantau, dan
+            mengoptimalkan pertumbuhan tanaman Anda dengan mudah.
+          </p>
+          <div class="cta-buttons">
+            <a href="/login" class="btn btn-primary">
+              Mulai Gratis
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="features-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Fitur Utama</h2>
+            <p>Tools yang dirancang khusus untuk pecinta tanaman</p>
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <path d="M3 9h18M9 21V9" />
+                </svg>
+              </div>
+              <h3>Manajemen Lahan</h3>
+              <p>
+                Kelola berbagai lahan pertanian Anda dalam satu dashboard. Catat
+                lokasi, ukuran, dan kondisi setiap lahan dengan mudah.
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 2v20M2 12h20" />
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </div>
+              <h3>Klasifikasi Tanaman</h3>
+              <p>
+                Klasifikasikan tanaman berdasarkan jenis, familia, dan
+                karakteristik. Database lengkap untuk referensi Anda.
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
+                </svg>
+              </div>
+              <h3>Jurnal Aktivitas</h3>
+              <p>
+                Catat setiap aktivitas pertanian Anda. Dari penyiraman,
+                pemupukan, hingga panen. Semua terdokumentasi rapi.
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                  />
+                  <path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+                </svg>
+              </div>
+              <h3>Dashboard Interaktif</h3>
+              <p>
+                Visualisasi data pertanian Anda dalam bentuk chart dan
+                statistik. Analisis performa dengan mudah.
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <h3>Keamanan Data</h3>
+              <p>
+                Data Anda aman dengan autentikasi Firebase. Backup otomatis dan
+                akses terenkripsi.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-section">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-item">
+              <h3>500+</h3>
+              <p>Tanaman Tercatat</p>
+            </div>
+            <div class="stat-item">
+              <h3>1000+</h3>
+              <p>Aktivitas Dicatat</p>
+            </div>
+            <div class="stat-item">
+              <h3>50+</h3>
+              <p>Jenis Tanaman</p>
+            </div>
+            <div class="stat-item">
+              <h3>24/7</h3>
+              <p>Akses Kapan Saja</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-it-works">
+        <div class="container">
+          <div class="section-header">
+            <h2>Cara Kerja</h2>
+            <p>Mulai dalam 3 langkah sederhana</p>
+          </div>
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <h3>Buat Akun</h3>
+              <p>
+                Daftar gratis dan buat akun JurnalTanam Anda dalam hitungan
+                detik.
+              </p>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <h3>Tambah Lahan</h3>
+              <p>Input data lahan dan tanaman yang ingin Anda kelola.</p>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <h3>Catat Aktivitas</h3>
+              <p>
+                Mulai catat aktivitas pertanian dan pantau progress tanaman
+                Anda.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 JurnalTanam. Dibuat dengan 💚 untuk pecinta tanaman.</p>
+        <p style="margin-top: 8px">
+          <a href="/">Beranda</a> • <a href="/feature">Fitur</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
